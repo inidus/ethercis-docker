@@ -1,0 +1,17 @@
+This is the first cut of a docker based Ethercis deployment. 
+
+It consist of two Docker containers which would be built and run by docker compose. 
+
+Database and Java server images are created based on Dockerfiles which sit under the dedicated directories (docker_ethercis_db and docker_ethercis_server)
+
+This docker compose file has been developed and tested using the following configuration:
+
+Host OS: Ubuntu 16.04
+Docker version: 18.03.1-ce, build 9ee9f40
+Docker Compose version: version 1.21.2, build a133471
+
+Run
+
+`docker-compose up` 
+
+to build and run Ethercis postgres and Java images.

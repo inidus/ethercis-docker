@@ -1,0 +1,30 @@
+version: '2.1'
+
+services:
+  
+  ethercis-db:    
+    build: ./docker_ethercis_db
+    ports:
+      - "5432:5432"        
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/pg_isready","-U","postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 100
+
+  ethercis-server:
+    build: ./docker_ethercis_server
+    depends_on:
+      ethercis-db:
+        condition: service_healthy # this is no longer possible in v 3.x + 
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=ethercis-db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASS=postgres
+
+
