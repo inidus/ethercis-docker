@@ -12,6 +12,6 @@ Docker Compose version: version 1.21.2, build a133471
 
 Run
 
-`docker-compose up` 
+docker-compose up
 
 to build and run Ethercis postgres and Java images.
