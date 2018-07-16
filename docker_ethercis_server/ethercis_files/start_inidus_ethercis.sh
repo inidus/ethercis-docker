@@ -15,9 +15,14 @@ if [ -z "$DB_HOST" -o -z "$DB_PORT" -o -z "$DB_PASS" -o -z "$DB_USER" ]; then
     exit 1    
 fi  
 
-sed -i "s|server.persistence.jooq.url=|server.persistence.jooq.url=jdbc:postgresql://$DB_HOST:$DB_PORT/ethercis|g" /etc/opt/ecis/services.properties    
-sed -i "s|server.persistence.jooq.login=|server.persistence.jooq.login=$DB_USER|g" /etc/opt/ecis/services.properties    
-sed -i "s|server.persistence.jooq.password=|server.persistence.jooq.password=$DB_PASS|g" /etc/opt/ecis/services.properties    
+#replace only once. In case docker container is stopped/started, or we'd corrupt these lines by replacing > 1 times
+if grep -q {init:} /etc/opt/ecis/services.properties; then
+	echo "First time configuring db connection parameters: replacing placeholders with actual values"
+	
+	sed -i "s|{init:}server.persistence.jooq.url=|server.persistence.jooq.url=jdbc:postgresql://$DB_HOST:$DB_PORT/ethercis|g" /etc/opt/ecis/services.properties    
+	sed -i "s|{init:}server.persistence.jooq.login=|server.persistence.jooq.login=$DB_USER|g" /etc/opt/ecis/services.properties    
+	sed -i "s|{init:}server.persistence.jooq.password=|server.persistence.jooq.password=$DB_PASS|g" /etc/opt/ecis/services.properties    
+fi	
 
 
 export LIB_DEPLOY=${ECIS_OPT}/lib/deploy
