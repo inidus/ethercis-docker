@@ -5,7 +5,9 @@ services:
   ethercis-db:    
     build: ./docker_ethercis_db
     ports:
-      - "5432:5432"        
+      - "5432:5432"
+    volumes:
+      - eth-data-volume:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=postgres
 
@@ -21,4 +23,6 @@ services:
       - DB_USER=postgres
       - DB_PASS=postgres
 
+volumes:
+  eth-data-volume:
 
