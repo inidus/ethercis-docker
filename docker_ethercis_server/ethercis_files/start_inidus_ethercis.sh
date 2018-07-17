@@ -24,6 +24,11 @@ if grep -q {init:} /etc/opt/ecis/services.properties; then
 	sed -i "s|{init:}server.persistence.jooq.password=|server.persistence.jooq.password=$DB_PASS|g" /etc/opt/ecis/services.properties    
 fi	
 
+if grep -q {log_dir} ${ECIS_ETC}/log4j.xml; then
+	echo "First time configuring logging: replacing placeholders with actual values"
+	sed -i "s|{log_dir}|${ECIS_VAR}/logs|g" ${ECIS_ETC}/log4j.xml
+fi
+
 
 export LIB_DEPLOY=${ECIS_OPT}/lib/deploy
 export SYSLIB=${ECIS_OPT}/lib/system
@@ -53,6 +58,6 @@ export CLASSPATH=$LIB_DEPLOY/*:$SYSLIB/ecis-dependencies/*:$SYSLIB/openehr-java-
 
 #this is the command the start script of ethercis runs once the start script is created
 #by the installation script
-${JVM}    -Xmx256M    -Xms256M    -server     -XX:-EliminateLocks     -XX:-UseVMInterruptibleIO   -cp ${CLASSPATH}    -Djava.util.logging.config.file=${RUNTIME_ETC}/logging.properties   -Dlog4j.configurationFile=file:${RUNTIME_ETC}/log4j.xml     -Djava.net.preferIPv4Stack=true     -Djava.awt.headless=true    -Djdbc.drivers=org.postgresql.Driver         -Dserver.node.name=${ECIS_NODE_NAME}          -Dfile.encoding=UTF-8     -Djava.rmi.server.hostname=${SERVER_HOST}  -Djooq.dialect=${JOOQ_DIALECT}  -Djooq.url=${JOOQ_URL}  -Djooq.login=${JOOQ_DB_LOGIN}   -Djooq.password=${JOOQ_DB_PASSWORD}     -Druntime.etc=${RUNTIME_ETC}     com.ethercis.vehr.Launcher     -propertyFile /etc/opt/ecis/services.properties     -server_host ${ECIS_REST_HOSTNAME}     -server_port ${ECIS_REST_PORT}
+${JVM}    -Xmx256M    -Xms256M    -server     -XX:-EliminateLocks     -XX:-UseVMInterruptibleIO   -cp ${CLASSPATH}    -Djava.util.logging.config.file=${RUNTIME_ETC}/logging.properties -Dlog4j.configurationFile=file:${RUNTIME_ETC}/log4j.xml     -Djava.net.preferIPv4Stack=true     -Djava.awt.headless=true    -Djdbc.drivers=org.postgresql.Driver         -Dserver.node.name=${ECIS_NODE_NAME}          -Dfile.encoding=UTF-8     -Djava.rmi.server.hostname=${SERVER_HOST}  -Djooq.dialect=${JOOQ_DIALECT}  -Djooq.url=${JOOQ_URL}  -Djooq.login=${JOOQ_DB_LOGIN}   -Djooq.password=${JOOQ_DB_PASSWORD}     -Druntime.etc=${RUNTIME_ETC}     com.ethercis.vehr.Launcher     -propertyFile /etc/opt/ecis/services.properties     -server_host ${ECIS_REST_HOSTNAME}     -server_port ${ECIS_REST_PORT}
 
 exit 0

@@ -7,7 +7,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - eth-data-volume:/var/lib/postgresql/data
+      - eth-data-volume:/var/lib/postgresql/data      
     environment:
       - POSTGRES_PASSWORD=postgres
 
@@ -17,6 +17,8 @@ services:
       - ethercis-db
     ports:
       - "8080:8080"
+    volumes:
+      - eth-server-logs:/var/opt/ecis/logs
     environment:
       - DB_HOST=ethercis-db
       - DB_PORT=5432
@@ -25,4 +27,5 @@ services:
 
 volumes:
   eth-data-volume:
+  eth-server-logs:
 

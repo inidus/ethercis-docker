@@ -12,6 +12,7 @@ RUN mkdir -p /opt/ecis
 COPY ethercis_files/opt_ecis/ /opt/ecis/
 
 RUN mkdir -p /var/opt/ecis
+COPY ethercis_files/var_opt_ecis/ /var/opt/ecis/
 
 RUN mkdir -p /ethercis
 
