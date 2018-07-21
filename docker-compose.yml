@@ -19,6 +19,7 @@ services:
       - "8080:8080"
     volumes:
       - eth-server-logs:/var/opt/ecis/logs
+      - eth-server-knowledge-artefacts:/var/opt/ecis/knowledge_contents
     environment:
       - DB_HOST=ethercis-db
       - DB_PORT=5432
@@ -28,4 +29,5 @@ services:
 volumes:
   eth-data-volume:
   eth-server-logs:
+  eth-server-knowledge-artefacts:
 
